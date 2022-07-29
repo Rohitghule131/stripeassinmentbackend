@@ -7,15 +7,6 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
-@csrf_exempt
-def my_webhook_view(request):
-    # if request.method['POST']:
-    payload = request.body
-    event = None
-    print(payload)
-    print("payload")
-    return HttpResponse(status=200)
-
 class GetProducts(generics.RetrieveAPIView):
     serializer_class = ProductSerializer
     lookup_field = ['pk']
