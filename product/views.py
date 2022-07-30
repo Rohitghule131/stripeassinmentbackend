@@ -3,6 +3,9 @@ from rest_framework.response import Response
 from product.models import Products
 from product.serializer import ProductSerializer
 
+
+# created end point for return products which are stored in db
+# created generic retrive class 
 class GetProducts(generics.RetrieveAPIView):
     serializer_class = ProductSerializer
     lookup_field = ['pk']

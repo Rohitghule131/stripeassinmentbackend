@@ -129,7 +129,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000'
+    os.environ.get('BASE_URL')
 ]
 
-BASE_URL = 'http://localhost:3000'
+BASE_URL = os.environ.get('BASE_URL')

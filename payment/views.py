@@ -7,15 +7,22 @@ from os import environ
 from django.http import HttpResponse
 from payment.models import PaymentHistory
 
-
+# get Stripe Secrete key from env file 
 stripe.api_key = environ.get('STRIPE_SECRET_KEY')
 
+BASE_URL = environ.get('BASE_URL')
+
+# get pk and count of product from end point 
+# pk is for porduct id which will retrive from DB 
+# redirect user from stripe payment 
+# using for stripe checkout session 
 class CreatePaymentRequest(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         id = self.kwargs['pk']
         count = self.kwargs['count']
         product = Products.objects.get(id=id)
+        # created checkout session for user 
         stripe_payment_object = stripe.checkout.Session.create(
             line_items = [
                 {
@@ -33,14 +40,18 @@ class CreatePaymentRequest(generics.CreateAPIView):
             metadata={
                 'product_id':product.id
             },
-            success_url = settings.BASE_URL + '?success=true',
-            cancel_url = settings.BASE_URL + '?cancel=true'
+            success_url = BASE_URL + '?success=true',
+            cancel_url = BASE_URL + '?cancel=true'
         )
-        print(stripe_payment_object,stripe_payment_object.url)
+        # if payment was successfull redirect user on base url which with the 
+        # success=true query
+        # else redirect user on base url with the cancel=true query
         return redirect(stripe_payment_object.url,code=303)
 
 class My_WebHook(generics.CreateAPIView):
     def stripe_webhook(self,session):
+        # trace and store data which stripe webhook forward to this end point
+        # traced data store in DB 
         name = session["charges"]["data"][0]["billing_details"]["name"]
         email = session["charges"]["data"][0]["billing_details"]["email"]
         amount = (session["charges"]["data"][0]["amount"])/100
