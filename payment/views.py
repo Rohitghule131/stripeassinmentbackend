@@ -30,7 +30,10 @@ class CreatePaymentRequest(generics.CreateAPIView):
                         'currency':'usd',
                         'unit_amount':int(product.price * 100),
                         'product_data':{
-                            'name':'Head Phone'
+                            'name':'Head Phone',
+                            'images':[
+                            product.product_url4
+                            ]
                         }
                     },
                     'quantity':count,
