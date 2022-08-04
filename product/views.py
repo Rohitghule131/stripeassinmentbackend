@@ -11,9 +11,9 @@ class GetProducts(generics.RetrieveAPIView):
     lookup_field = ['pk']
 
     def get_queryset(self):
-        obj = Products.objects.all()
+        obj = Products.objects.get(id=1)
         return obj
     def get(self, request, *args, **kwargs):
         obj = self.get_queryset()
-        serializer = self.get_serializer(obj,many=True)
+        serializer = self.get_serializer(obj)
         return Response(serializer.data)
