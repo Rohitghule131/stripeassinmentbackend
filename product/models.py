@@ -2,6 +2,9 @@ from django.db import models
 from rest_framework import serializers
 
 # Created Product Model as Products
+class DescriptionOfProduct(models.Model):
+    description = models.TextField(verbose_name="description")
+    
 class Products(models.Model):
     brand_name = models.CharField(verbose_name="Brand Name",max_length=50,default="null")
     name_of_product = models.CharField(verbose_name="Name of Product",max_length=50,null=False)
