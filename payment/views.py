@@ -28,7 +28,13 @@ class CreatePaymentRequest(generics.CreateAPIView):
                 {
                     'price_data':{
                         'currency':'usd',
-                        'unit_amount':int(product.price*100),
+                        'unit_amount':int(product.price*100), # unit amount gives here in (x * 100) where x = product.price
+                        # stripe gives unit amount in integer only so we convert float amount into integer and give
+                        # exmple product.price is 299.99 $ so we need to convert it into integer format hence it multiply with 100
+                        # = product.id * 100 
+                        # = 299.99 * 100
+                        # = 29999
+                        # so stripe can convert it into 299.99 $
                         'product_data':{
                             'name':'Head Phone',
                             'images':[
