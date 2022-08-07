@@ -89,7 +89,9 @@ class StripePaymentData(generics.CreateAPIView):
         except stripe.error.SignatureVerificationError as e:
             # Invalid signature
             return HttpResponse(status=400)
-        if event['type'] == 'payment_intent.succeeded':
+
+        #  it saves failed and succeeded data in DB
+        if event['type'] in ['payment_intent.succeeded','payment_intent.payment_failed']:
             session = event['data']['object']
             data = self.stripe_webhook(session)
             serializer = self.get_serializer(data=data)
